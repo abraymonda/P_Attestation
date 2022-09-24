@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import utils.DB;
@@ -44,6 +45,11 @@ public class Formation {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.prix = prix;
+    }
+    
+    public Formation(int idFormation, String titre) {
+        this.idFormation = idFormation;
+        this.titre = titre;
     }
 
     
@@ -105,7 +111,7 @@ public class Formation {
         model.addColumn("PRIX");
         model.addColumn("DATE DEBUT");
         model.addColumn("DATE FIN");
-        model.addColumn("");
+        //model.addColumn("");
     
         try ( 
             PreparedStatement ps = (PreparedStatement) DB.getConnection().prepareStatement("SELECT * FROM formation "
@@ -184,7 +190,32 @@ public class Formation {
         
         return model;
     }
+    
+    public DefaultComboBoxModel getForCombobox(){
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        try ( 
+        PreparedStatement ps = (PreparedStatement) DB.getConnection().prepareStatement("SELECT * FROM formation");
+                                                                                            
+                                                                                            
+            ResultSet rset = ps.executeQuery()) {
+            while (rset.next()) {
+                
+                Formation f = new Formation(
+                   rset.getInt("idFormation"),
+                   rset.getString("titre")
+                );
+                model.addElement(f);
+            }
 
+        } catch (Exception e) {
+            Logger.getLogger(Formation.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+        
+        return model;
+    }
+
+    
     @Override
     public String toString() {
         return this.getTitre();

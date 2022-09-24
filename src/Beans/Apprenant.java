@@ -7,7 +7,7 @@ package Beans;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -94,7 +94,7 @@ public class Apprenant {
         }
         return false;
     }
-    public DefaultTableModel getForJTable(String params) {
+    public DefaultTableModel getForJTable(String params, String on) {
     // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 
     DefaultTableModel model = new DefaultTableModel();
@@ -104,10 +104,19 @@ public class Apprenant {
     model.addColumn("EMAIL");
     model.addColumn("TELEPHONE");
     
+    String query = "";
+    
+    if(on == "a"){
+        query = "SELECT * FROM apprenant WHERE nomApp "
+                + "LIKE '%"+params+"%' OR prenomApp LIKE '%"+params+"%' "
+                + "ORDER BY codeApprenant DESC;";
+    }else if(on == "f"){
+        query = "SELECT * FROM apprenant_in_formation WHERE idFormation = "+params+"";
+    }
+    
+    
     try ( 
-            PreparedStatement ps = (PreparedStatement) DB.getConnection().prepareStatement("SELECT * FROM apprenant WHERE nomApp "
-                                                                                            + "LIKE '%"+params+"%' OR prenomApp LIKE '%"+params+"%' "
-                                                                                            + "ORDER BY codeApprenant DESC;");
+            PreparedStatement ps = (PreparedStatement) DB.getConnection().prepareStatement(query);
             ResultSet rset = ps.executeQuery()) {
         while (rset.next()) {
             

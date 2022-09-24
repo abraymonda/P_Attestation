@@ -5,6 +5,7 @@
  */
 package Forms;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,14 +21,14 @@ public class Apprenant extends javax.swing.JFrame {
      * Creates new form Apprenant
      */
     private int codeApprenant;
-    
-    private void remplirTable(String params) {
+    Beans.Apprenant a = new Beans.Apprenant();
+    private void remplirTable(String params, String on) {
         System.out.println("Loading data...");
         DefaultTableModel model = new DefaultTableModel();
-        model = (new Beans.Apprenant().getForJTable(params));
+        model = (a.getForJTable(params, on));
         if(model != null){
             this.jTableApprenants.setModel(model);
-            System.out.print("Loaded: ");
+            System.out.println("Students Loaded");
 
             jLabelTotalApprenants.setText(String.valueOf(model.getRowCount())+" Apprenants");
         }
@@ -36,8 +37,16 @@ public class Apprenant extends javax.swing.JFrame {
     public Apprenant() {
         initComponents();
         
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model = (new Beans.Formation().getForCombobox());
+        if(model != null){
+            jComboBoxFormations.setModel(model);
+            jComboBoxFormations.addItem(null);
+            System.out.println("Formation Loaded ");
+        }
         
-        this.remplirTable("");
+        //this.remplirTable("", "a");
+        jComboBoxFormations.setSelectedIndex(-1);
     }
 
     /**
@@ -70,6 +79,8 @@ public class Apprenant extends javax.swing.JFrame {
         jLabelTotalApprenants = new javax.swing.JLabel();
         jTextFieldRecherche = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jComboBoxFormations = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableApprenants = new javax.swing.JTable();
 
@@ -225,6 +236,15 @@ public class Apprenant extends javax.swing.JFrame {
 
         jLabel2.setText("Recherche");
 
+        jComboBoxFormations.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxFormations.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxFormationsItemStateChanged(evt);
+            }
+        });
+
+        jLabel3.setText("Filtre sur Formation");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -235,8 +255,15 @@ public class Apprenant extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextFieldRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(label6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(226, 226, 226)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(label6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(227, 227, 227))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBoxFormations, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90)))
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelTotalApprenants)
@@ -245,20 +272,25 @@ public class Apprenant extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(label6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxFormations, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabelTotalApprenants))
-                            .addComponent(label6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addContainerGap())))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabelTotalApprenants))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jTextFieldRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))))))
         );
 
         jTableApprenants.setModel(new javax.swing.table.DefaultTableModel(
@@ -298,8 +330,8 @@ public class Apprenant extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -342,7 +374,7 @@ public class Apprenant extends javax.swing.JFrame {
             
             if(traitement){
                 jTextFieldCode.setText("");
-                this.remplirTable("");
+                this.remplirTable("", "a");
                 jTextFieldNom.setText("");
                 jTextFieldPrenom.setText("");
                 jTextFieldEmail.setText("");
@@ -375,7 +407,7 @@ public class Apprenant extends javax.swing.JFrame {
             
         if (A.Delete()) {
              JOptionPane.showMessageDialog(rootPane, "Suppression effectuée");
-             this.remplirTable("");
+             this.remplirTable("", "a");
              jTextFieldNom.setText("");
              jTextFieldPrenom.setText("");
              jTextFieldEmail.setText("");
@@ -388,9 +420,9 @@ public class Apprenant extends javax.swing.JFrame {
     private void jTextFieldRechercheKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRechercheKeyPressed
         // TODO add your handling code here:
         if(!jTextFieldRecherche.getText().isBlank() && jTextFieldRecherche.getText() != null){
-            this.remplirTable(jTextFieldRecherche.getText().toString());
+            this.remplirTable(jTextFieldRecherche.getText().toString(), "a");
         }else{
-            this.remplirTable("");
+            this.remplirTable("", "a");
         }
     }//GEN-LAST:event_jTextFieldRechercheKeyPressed
 
@@ -403,6 +435,20 @@ public class Apprenant extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Selectionner un apprenant svp !");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBoxFormationsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxFormationsItemStateChanged
+        // TODO add your handling code here:
+        
+        Object selectedValue = jComboBoxFormations.getSelectedItem();
+        Beans.Formation selectedFormation = (Beans.Formation) selectedValue;
+        
+        if(selectedFormation != null){
+            System.out.println(selectedFormation);
+            this.remplirTable(String.valueOf(selectedFormation.getIdFormation()), "f");
+        }else{
+            this.remplirTable("", "a");
+        }
+    }//GEN-LAST:event_jComboBoxFormationsItemStateChanged
     
     
 
@@ -446,8 +492,10 @@ public class Apprenant extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonEnregistrer;
     private javax.swing.JButton jButtonSupp;
+    private javax.swing.JComboBox<String> jComboBoxFormations;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelTotalApprenants;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
