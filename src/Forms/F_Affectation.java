@@ -6,8 +6,26 @@
 package Forms;
 
 import Beans.Formation;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
+import utils.DB;
+import java.sql.Connection;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
 /**
  *
  * @author DELL
@@ -23,7 +41,7 @@ public class F_Affectation extends javax.swing.JFrame {
     private DefaultListModel modelOwns = new DefaultListModel();
     private DefaultListModel modelAll = new DefaultListModel();
     private String codeApprenant, nom, prenom;
- 
+    private Connection con;
 
     public F_Affectation() {
         
@@ -46,6 +64,8 @@ public class F_Affectation extends javax.swing.JFrame {
         jTextFieldCode.setText(this.codeApprenant);
         jTextFieldNom.setText(this.nom);
         jTextFieldPrenom.setText(this.prenom);
+        
+        this.con = con = DB.getConnection();
     }
 
     /**
@@ -64,6 +84,7 @@ public class F_Affectation extends javax.swing.JFrame {
         jTextFieldCode = new javax.swing.JTextField();
         jTextFieldNom = new javax.swing.JTextField();
         jTextFieldPrenom = new javax.swing.JTextField();
+        jButtonPrint = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListOwnsFormation = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -102,6 +123,13 @@ public class F_Affectation extends javax.swing.JFrame {
         jTextFieldPrenom.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jTextFieldPrenom.setText("Meta");
 
+        jButtonPrint.setText("PRINT");
+        jButtonPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -113,10 +141,12 @@ public class F_Affectation extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldCode)
-                    .addComponent(jTextFieldNom, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addComponent(jTextFieldPrenom))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextFieldCode)
+                        .addComponent(jTextFieldNom, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                        .addComponent(jTextFieldPrenom))
+                    .addComponent(jButtonPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -135,7 +165,9 @@ public class F_Affectation extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextFieldPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(jButtonPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
 
         jListOwnsFormation.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
@@ -254,6 +286,36 @@ public class F_Affectation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonAddFormationActionPerformed
 
+    private void jButtonPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrintActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = jListOwnsFormation.getSelectedIndex();
+        if(selectedIndex >=0 ){
+            Object selectedValue = jListOwnsFormation.getSelectedValue();
+
+            Formation selectedFormation = (Beans.Formation) selectedValue;
+        
+        
+        
+            try{
+                InputStream in = new FileInputStream(new File("C:\\Users\\DELL\\Documents\\NetBeansProjects\\P_Attestation\\src\\Reports\\gpt_attestation.jrxml"));
+                String sql = "SELECT * FROM apprenant_in_formation WHERE idFormation = "+selectedFormation.getIdFormation()+" AND codeApprenant = "+jTextFieldCode.getText()+";";
+                JasperDesign jd = JRXmlLoader.load(in);
+                JRDesignQuery query = new  JRDesignQuery();
+                query.setText(sql);
+                jd.setQuery(query);
+                JasperReport jr = JasperCompileManager.compileReport(jd);
+                HashMap pr = new HashMap();
+                JasperPrint jp = JasperFillManager.fillReport(jr, pr,con);
+                JasperViewer.viewReport(jp, false);
+                OutputStream ou = new FileOutputStream(new File("D:\\reports"));
+                JasperExportManager.exportReportToPdfStream(jp, ou);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(rootPane, e.toString());
+            }
+        }
+    }//GEN-LAST:event_jButtonPrintActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -291,6 +353,7 @@ public class F_Affectation extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddFormation;
+    private javax.swing.JButton jButtonPrint;
     private javax.swing.JButton jButtonRemoveFormation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
