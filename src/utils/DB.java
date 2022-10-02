@@ -11,21 +11,33 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+import java.io.*;
 /**
  *
  * @author DELL
  */
 public class DB {
-    static Connection connect;
+    static Connection connect = null;
    
+    
+    static String[] params;
+     
+    
+    static String url = "";
 
-    static String url = "jdbc:mysql://localhost:3306/gestattestation";
-
-    static String login = "root";
+    static String login = "";
  
     static String password = "";
-
+    
     public static Connection getConnection()  {
+        
+        params = getConnectionParameters().split(",");
+        
+        login = params[0];
+        password = params[1];
+        String port = params[2];
+        url = "jdbc:mysql://localhost:+"+port+"/"+params[3];
         if (connect == null) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -40,5 +52,39 @@ public class DB {
         
         return connect;
     
+    }
+    
+    public static void setupConnection(String username, String password,String port, String database){
+        try {
+            System.out.println("writing...");
+            BufferedWriter bw  = new BufferedWriter(
+                new FileWriter("conn_params.txt")
+            );
+            
+            bw.write(username+","+password+","+port+","+database);
+            bw.close();
+        }catch(IOException e){
+            System.out.println(e.toString());
+        }
+    }
+    
+    public static String getConnectionParameters(){
+        
+        String values = null;
+        try {
+            BufferedReader br  = new BufferedReader(
+                new FileReader("conn_params.txt")
+            );
+            
+            values = br.readLine();
+            
+            br.close();
+            
+        }catch(IOException e){
+            System.out.println(e.toString());
+        }
+        
+        return values;
+        
     }
 }

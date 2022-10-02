@@ -40,6 +40,7 @@ public class Utilisateur extends javax.swing.JFrame {
         buttonConnect = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("LOGIN");
         setBackground(new java.awt.Color(0, 0, 0));
         setLocation(new java.awt.Point(400, 200));
 

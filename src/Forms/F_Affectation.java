@@ -297,7 +297,7 @@ public class F_Affectation extends javax.swing.JFrame {
         
         
             try{
-                InputStream in = new FileInputStream(new File("C:\\Users\\DELL\\Documents\\NetBeansProjects\\P_Attestation\\src\\Reports\\gpt_attestation.jrxml"));
+                InputStream in = new FileInputStream(new File("src\\Reports\\gpt_attestation.jrxml"));
                 String sql = "SELECT * FROM apprenant_in_formation WHERE idFormation = "+selectedFormation.getIdFormation()+" AND codeApprenant = "+jTextFieldCode.getText()+";";
                 JasperDesign jd = JRXmlLoader.load(in);
                 JRDesignQuery query = new  JRDesignQuery();
