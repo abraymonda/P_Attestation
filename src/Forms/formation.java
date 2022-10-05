@@ -8,7 +8,7 @@ package Forms;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Beans.Formation;
- 
+import utils.DateUtils;
 import java.util.Date;
 
 /**
@@ -26,7 +26,7 @@ public class formation extends javax.swing.JFrame {
     private void remplirTable(String params) {
         System.out.println("Loading data...");
         DefaultTableModel model = new DefaultTableModel();
-        model = (new Beans.Formation().getForJTable(params));
+        model = (new Formation().getForJTable(params));
         if(model != null){
             this.jTableFormation.setModel(model);
             System.out.print("Loaded: ");
@@ -57,8 +57,9 @@ public class formation extends javax.swing.JFrame {
         textFieldTitre = new java.awt.TextField();
         textFieldPrix = new java.awt.TextField();
         label4 = new java.awt.Label();
-        jButton2 = new javax.swing.JButton();
+        jButtonEnregistrer = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jTextFieldIdFormation = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         label5 = new java.awt.Label();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -82,53 +83,62 @@ public class formation extends javax.swing.JFrame {
         label4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         label4.setText("DATE DE FIN:");
 
-        jButton2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jButton2.setText("ENREGISTRER");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEnregistrer.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jButtonEnregistrer.setText("ENREGISTRER");
+        jButtonEnregistrer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonEnregistrerActionPerformed(evt);
             }
         });
 
         jButton1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jButton1.setText("SUPPRIMER");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(textFieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(56, 56, 56)
-                                .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(textFieldTitre, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
-                                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
-                        .addComponent(jButton2)
-                        .addGap(132, 132, 132)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooserDateDebut, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooserDateFin, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(72, Short.MAX_VALUE))
+                                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jButtonEnregistrer)))
+                                .addGap(56, 56, 56)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooserDateDebut, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooserDateFin, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jTextFieldIdFormation, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextFieldIdFormation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textFieldTitre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,11 +150,11 @@ public class formation extends javax.swing.JFrame {
                     .addComponent(textFieldPrix, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jDateChooserDateFin, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEnregistrer, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addGap(56, 56, 56))
         );
 
         label5.setFont(new java.awt.Font("Verdana", 1, 15)); // NOI18N
@@ -157,13 +167,13 @@ public class formation extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(240, 240, 240)
                 .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(label5, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE))
         );
 
         jTableFormation.setModel(new javax.swing.table.DefaultTableModel(
@@ -177,6 +187,11 @@ public class formation extends javax.swing.JFrame {
                 "Code", "Titre", "Prix", "Date du debut", "Date de fin"
             }
         ));
+        jTableFormation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableFormationMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableFormation);
 
         label6.setFont(new java.awt.Font("Verdana", 1, 15)); // NOI18N
@@ -211,16 +226,16 @@ public class formation extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonEnregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnregistrerActionPerformed
         // TODO add your handling code here:
         
         Date dateDeb, dateFin;
@@ -235,26 +250,62 @@ public class formation extends javax.swing.JFrame {
         }else if (jDateChooserDateFin.getDate() == null){
             JOptionPane.showMessageDialog(rootPane, "Entrez la date de fin de la formation");
         }else {
-            Beans.Formation F = new Beans.Formation();
+            Beans.Formation F = new Formation();
             F.setTitre(textFieldTitre.getText());
             F.setPrix(textFieldPrix.getText());
             F.setDateDebut(jDateChooserDateDebut.getDate());
-            
             F.setDateFin(jDateChooserDateFin.getDate());
-            try {
-                Integer.parseInt(textFieldPrix.getText());
+            
+            boolean traitement = false;
+            if (jTextFieldIdFormation.getText().isBlank() || jTextFieldIdFormation.getText().isEmpty()){//Verifier si Enregistrer ou Modifier
                 if (F.Insert()) {
-                    this.remplirTable("");
-                    //JOptionPane.showMessageDialog(rootPane, "Enregistrer !");
+                    traitement = true;
+                }
+            }else {
+                F.setIdFormation(Integer.valueOf(jTextFieldIdFormation.getText()));
+                if (F.Update()) {
+                    traitement = true;
                 }
             }
-            catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(rootPane, "Le prix doit etre un nombre svp !");
+                 
+            if(traitement){
+                jTextFieldIdFormation.setText("");
+                this.remplirTable("");
+                textFieldTitre.setText("");
+                textFieldPrix.setText("");
+                jDateChooserDateDebut.setDate(null);
+                jDateChooserDateFin.setDateFormatString(null);
             }
 
                
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonEnregistrerActionPerformed
+
+    private void jTableFormationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableFormationMouseClicked
+        // TODO add your handling code here:
+        int row = jTableFormation.getSelectedRow();
+        if(row >= 0){
+            jTextFieldIdFormation.setText(jTableFormation.getModel().getValueAt(row, 0).toString());
+            textFieldTitre.setText(jTableFormation.getModel().getValueAt(row, 1).toString());
+            textFieldPrix.setText(jTableFormation.getModel().getValueAt(row, 2).toString());
+            jDateChooserDateDebut.setDate(DateUtils.strToDate(jTableFormation.getModel().getValueAt(row, 3).toString()));
+            jDateChooserDateFin.setDate(DateUtils.strToDate(jTableFormation.getModel().getValueAt(row, 4).toString()));
+        }
+    }//GEN-LAST:event_jTableFormationMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(!jTextFieldIdFormation.getText().isBlank() && !jTextFieldIdFormation.getText().isEmpty()){
+            if(JOptionPane.showConfirmDialog(rootPane, "Une suppression definitive sera effectue \n\n Voulez-vous vraiment supprimer ?", "Suppresion", WIDTH, HEIGHT) == 0){
+                Formation F = new Formation();
+                F.setIdFormation(Integer.valueOf(jTextFieldIdFormation.getText()));
+                if(F.Delete()){
+                    this.remplirTable("");
+                    JOptionPane.showMessageDialog(rootPane, "Supprimer avec succes");
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,7 +344,7 @@ public class formation extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonEnregistrer;
     private com.toedter.calendar.JDateChooser jDateChooserDateDebut;
     private com.toedter.calendar.JDateChooser jDateChooserDateFin;
     private javax.swing.JPanel jPanel1;
@@ -301,6 +352,7 @@ public class formation extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableFormation;
+    private javax.swing.JTextField jTextFieldIdFormation;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label label3;
