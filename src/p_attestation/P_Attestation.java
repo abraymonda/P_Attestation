@@ -21,7 +21,7 @@ public class P_Attestation {
         // TODO code application logic here
         //DB.setupConnection("root", "", "3306", "gestattestation");
         //DB.getConnectionParameters();
-        DB.getConnection();
+        //DB.getConnection();
         if(DB.getConnection() != null){
             Utilisateur login = new Utilisateur();
             login.setVisible(true);

@@ -10,8 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
+import com.mysql.jdbc.Driver;
 import java.io.*;
 /**
  *
@@ -37,17 +36,18 @@ public class DB {
         login = params[0];
         password = params[1];
         String port = params[2];
-        url = "jdbc:mysql://localhost:+"+port+"/"+params[3];
+        url = "jdbc:mysql://localhost:"+port+"/"+params[3]+"?useSSL=false";
         if (connect == null) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                //Class.forName("com.mysql.jdbc.Driver");
+                //Class.forName("java.sql.Driver");
                 connect = DriverManager.getConnection(url, login,password);
                 System.out.println("Connection réussie"); 
             } catch (SQLException e) {
-                System.out.println("connection échoué: "+e.getMessage());
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                System.out.println("connection échoué: "+e);
+            } //catch (ClassNotFoundException ex) {
+                //Logger.getLogger(DB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            //}
         }
         
         return connect;

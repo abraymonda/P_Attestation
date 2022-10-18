@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\DELL\Documents\NetBeansProjects\P_Attestation\dist\P_Attestation.jar</jar>
+  <outfile>install\GPT_attestation.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\DELL\Documents\NetBeansProjects\P_Attestation\gpt_icon.ico</icon>
+  <classPath>
+    <mainClass>p_attestation.P_Attestation</mainClass>
+    <cp>lib/mysql-connector-java-5.1.45-bin.jar</cp>
+    <cp>lib/jcalendar-1.4.jar</cp>
+    <cp>lib/bcprov-jdk15on-1.70.jar</cp>
+    <cp>lib/bcutil-jdk15on-1.70.jar</cp>
+    <cp>lib/commons-beanutils-1.9.4.jar</cp>
+    <cp>lib/commons-collections-3.2.2.jar</cp>
+    <cp>lib/commons-collections4-4.2.jar</cp>
+    <cp>lib/commons-digester-2.1.jar</cp>
+    <cp>lib/commons-logging-1.1.1.jar</cp>
+    <cp>lib/ecj-3.21.0.jar</cp>
+    <cp>lib/itext-2.1.7.js10.jar</cp>
+    <cp>lib/jackson-annotations-2.13.3.jar</cp>
+    <cp>lib/jackson-core-2.13.3.jar</cp>
+    <cp>lib/jackson-databind-2.13.3.jar</cp>
+    <cp>lib/jackson-dataformat-xml-2.13.3.jar</cp>
+    <cp>lib/jasperreports-6.20.0.jar</cp>
+    <cp>lib/jcommon-1.0.23.jar</cp>
+    <cp>lib/jfreechart-1.0.19.jar</cp>
+    <cp>lib/stax2-api-4.2.1.jar</cp>
+    <cp>lib/woodstox-core-6.2.7.jar</cp>
+    <cp>lib/groovy.jar</cp>
+    <cp>lib/groovy-ant.jar</cp>
+  </classPath>
+  <jre>
+    <path>C:\Users\DELL\Documents\NetBeansProjects\P_Attestation\install\jre</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0</txtFileVersion>
+    <fileDescription>Attestation application</fileDescription>
+    <copyright>@ABA 2022</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0</txtProductVersion>
+    <productName>GPT_Attestation</productName>
+    <companyName>Global Prime Tech.</companyName>
+    <internalName>GPT_Attestation</internalName>
+    <originalFilename>GPT_Attestation.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>FRENCH</language>
+  </versionInfo>
+</launch4jConfig>
